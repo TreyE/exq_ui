@@ -142,8 +142,8 @@ defmodule ExqUi.RouterPlug do
       {:ok, processes} = Exq.Api.processes(conn.assigns[:exq_name])
 
       process_jobs = for p <- processes do
-        process = Map.delete(p, "job")
         pjob = p.job
+        process = (Map.delete(p, "job") |> Map.delete(:job))
         process = Map.put(process, :job_id, pjob["jid"])
         |> Map.put(:started_at, score_to_time(p.started_at))
         |> Map.put(:id, "#{process.host}:#{process.pid}")
